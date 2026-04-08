@@ -1,0 +1,702 @@
+/* Add these styles to your existing CSS */
+
+.slider-container {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #74b9ff 0%, #0984e3 100%);
+    outline: none;
+    margin-bottom: 15px;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slider:hover {
+    height: 10px;
+    background: linear-gradient(90deg, #81c2ff 0%, #0d8eff 100%);
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #0984e3;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #f8f9fa;
+    border-color: #74b9ff;
+}
+
+.slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid #0984e3;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    background: #f8f9fa;
+    border-color: #74b9ff;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #636e72;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.slider-labels span {
+    transform: rotate(-45deg);
+    transform-origin: center;
+    display: inline-block;
+    text-align: center;
+    width: 30px;
+    margin: 0 -5px;
+}
+
+/* Remove the info banner since we're hiding API info */
+.info-banner {
+    display: none;
+}
+
+/* Smooth animations for weather card */
+.weather-card {
+    transition: all 0.5s ease;
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .slider-labels {
+        font-size: 0.7rem;
+    }
+    
+    .slider-labels span {
+        width: 25px;
+        margin: 0 -8px;
+    }
+}
+
+/* Keep all your existing CSS styles below this line */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.controls {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 25px;
+}
+
+.date-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.date-selector label {
+    font-weight: 600;
+    color: #2d3436;
+}
+
+.date-selector input {
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.date-selector input:focus {
+    outline: none;
+    border-color: #74b9ff;
+}
+
+#predictBtn {
+    background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#predictBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#predictBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #74b9ff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error {
+    background: #ff7675;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.results {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.summary-card {
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.summary-card h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.summary-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+.hourly-forecast h3 {
+    margin-bottom: 20px;
+    color: #2d3436;
+    text-align: center;
+}
+
+.hourly-detail {
+    display: flex;
+    justify-content: center;
+}
+
+.weather-card {
+    background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    min-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.weather-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.weather-icon {
+    font-size: 4rem;
+    margin-right: 20px;
+}
+
+.weather-main .time {
+    font-size: 1.3rem;
+    opacity: 0.9;
+}
+
+.weather-main .temp {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.weather-main .condition {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.weather-details {
+    border-top: 1px solid rgba(255,255,255,0.3);
+    padding-top: 20px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.detail-item i {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.detail-item span {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 3px;
+}
+
+.detail-item strong {
+    font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .date-selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .date-selector input, #predictBtn {
+        width: 100%;
+    }
+
+    .summary-content {
+        grid-template-columns: 1fr;
+    }
+
+    .weather-card {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .weather-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .weather-icon {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+
+/* METAR Section Styles */
+.metar-section {
+    margin-top: 30px;
+}
+
+.metar-section h3 {
+    color: #2d3436;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.metar-card {
+    background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.metar-code {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #fff;
+    word-break: break-all;
+}
+
+.metar-explanation {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    line-height: 1.5;
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #fff;
+}
+
+.metar-explanation strong {
+    color: #ffeaa7;
+}
+
+/* Responsive adjustments for METAR */
+@media (max-width: 768px) {
+    .metar-code {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .metar-explanation {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+}
+
+/* METCM Section Styles */
+.metcm-section {
+    margin-top: 30px;
+}
+
+.metcm-section h3 {
+    color: #2d3436;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.metcm-card {
+    background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.metcm-code {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #fff;
+    white-space: pre-wrap;
+    word-break: break-all;
+    line-height: 1.4;
+}
+
+.metcm-explanation {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    line-height: 1.5;
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #fff;
+    white-space: pre-wrap;
+}
+
+.metcm-explanation strong {
+    color: #ffeaa7;
+}
+
+/* Responsive adjustments for METCM */
+@media (max-width: 768px) {
+    .metcm-code {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+
+    .metcm-explanation {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+}
+
+
+/* METCM Section with Scroll */
+.metcm-section {
+    margin: 20px 0;
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metcm-section h3 {
+    color: #ecf0f1;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.metcm-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Compact Scrollable METCM Code */
+.metcm-code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75em;
+    line-height: 1.2;
+    color: #27ae60;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(39, 174, 96, 0.3);
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Scrollbar Styling for METCM Code */
+.metcm-code::-webkit-scrollbar {
+    width: 6px;
+}
+
+.metcm-code::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.metcm-code::-webkit-scrollbar-thumb {
+    background: #27ae60;
+    border-radius: 3px;
+}
+
+.metcm-code::-webkit-scrollbar-thumb:hover {
+    background: #219955;
+}
+
+/* Compact METCM Explanation */
+.metcm-explanation {
+    margin-top: 15px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid #e74c3c;
+    font-size: 0.8em;
+    line-height: 1.4;
+    color: #bdc3c7;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.metcm-explanation::-webkit-scrollbar {
+    width: 6px;
+}
+
+.metcm-explanation::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.metcm-explanation::-webkit-scrollbar-thumb {
+    background: #e74c3c;
+    border-radius: 3px;
+}
+
+.metcm-explanation::-webkit-scrollbar-thumb:hover {
+    background: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .metcm-section {
+        margin: 15px 0;
+        padding: 15px;
+    }
+
+    .metcm-code {
+        font-size: 0.7em;
+        max-height: 150px;
+        padding: 10px;
+    }
+
+    .metcm-explanation {
+        font-size: 0.75em;
+        max-height: 120px;
+        padding: 10px;
+    }
+}
+.metcm-time-indicator {
+    color: #27ae60;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: rgba(39, 174, 96, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+/* Copy Button Styling */
+.copy-btn {
+    background: linear-gradient(135deg, #27ae60, #219955);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+}
+
+.copy-btn:hover {
+    background: linear-gradient(135deg, #219955, #1e8449);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+}
+
+.copy-btn:active {
+    transform: translateY(0);
+}
+
+.copy-btn.copied {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+.copy-btn.copied:hover {
+    background: linear-gradient(135deg, #2980b9, #2471a3);
+}
+
+.copy-btn i {
+    font-size: 0.9em;
+}
+
+/* Metcm Header Layout */
+.metcm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.metcm-title {
+    color: #ecf0f1;
+    font-size: 0.9em;
+    font-weight: 600;
+    flex: 1;
+}
+
+.metcm-time-indicator {
+    color: #27ae60;
+    font-size: 0.8em;
+    font-weight: 600;
+    background: rgba(39, 174, 96, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(39, 174, 96, 0.3);
+}

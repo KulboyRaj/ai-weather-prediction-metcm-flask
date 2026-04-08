@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecasting App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-cloud-sun"></i> Weather Forecast</h1>
+            <p>AI-Powered Weather Predictions</p>
+        </header>
+
+        <div class="controls">
+            <div class="date-selector">
+                <label for="datePicker">Select Prediction Date:</label>
+                <input type="date" id="datePicker"
+                       value="{{ default_date }}"
+                       min="{{ min_date }}"
+                       max="{{ max_date }}">
+                <button id="predictBtn" onclick="getPrediction()">
+                    <i class="fas fa-bolt"></i> Predict Weather
+                </button>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Analyzing weather patterns...</p>
+        </div>
+
+        <div id="error" class="error hidden">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="errorMessage"></span>
+        </div>
+
+        <div id="results" class="results hidden">
+            <div class="summary-card">
+                <h2 id="summaryDate"></h2>
+                <div class="summary-content">
+                    <div class="summary-item">
+                        <i class="fas fa-temperature-high"></i>
+                        <span>High: <span id="maxTemp"></span>°C</span>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-temperature-low"></i>
+                        <span>Low: <span id="minTemp"></span>°C</span>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-tint"></i>
+                        <span>Humidity: <span id="avgHumidity"></span>%</span>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-wind"></i>
+                        <span>Max Wind: <span id="maxWind"></span> km/h</span>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-cloud-rain"></i>
+                        <span>Precip: <span id="totalPrecip"></span> mm</span>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-cloud"></i>
+                        <span>Condition: <span id="dominantCondition"></span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hourly-forecast">
+                <h3>24-Hour Forecast (2-Hour Intervals)</h3>
+                <div class="slider-container">
+                    <input type="range" id="hourSlider" min="0" max="11" value="6" class="slider">
+                    <div class="slider-labels">
+                        <span>00:00</span>
+                        <span>02:00</span>
+                        <span>04:00</span>
+                        <span>06:00</span>
+                        <span>08:00</span>
+                        <span>10:00</span>
+                        <span>12:00</span>
+                        <span>14:00</span>
+                        <span>16:00</span>
+                        <span>18:00</span>
+                        <span>20:00</span>
+                        <span>22:00</span>
+                    </div>
+                </div>
+
+                <div id="hourlyDetail" class="hourly-detail">
+                    <div class="weather-card">
+                        <div class="weather-header">
+                            <div class="weather-icon" id="weatherIcon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="weather-main">
+                                <div class="time" id="currentTime">12:00</div>
+                                <div class="temp" id="currentTemp">--°C</div>
+                                <div class="condition" id="currentCondition">--</div>
+                            </div>
+                        </div>
+                        <div class="weather-details">
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <i class="fas fa-tint"></i>
+                                    <span>Humidity</span>
+                                    <strong id="currentHumidity">--%</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-wind"></i>
+                                    <span>Wind Speed</span>
+                                    <strong id="currentWind">-- km/h</strong>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <i class="fas fa-compass"></i>
+                                    <span>Wind Dir</span>
+                                    <strong id="currentWindDir">--°</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-compress-alt"></i>
+                                    <span>Pressure</span>
+                                    <strong id="currentPressure">-- hPa</strong>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <i class="fas fa-cloud"></i>
+                                    <span>Cloud Cover</span>
+                                    <strong id="currentCloud">--%</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Visibility</span>
+                                    <strong id="currentVisibility">-- km</strong>
+                                </div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-item">
+                                    <i class="fas fa-cloud-rain"></i>
+                                    <span>Precipitation</span>
+                                    <strong id="currentPrecip">-- mm</strong>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-thermometer-half"></i>
+                                    <span>Dew Point</span>
+                                    <strong id="currentDew">--°C</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+     <!-- METCM Section -->
+<!-- METCM Section -->
+<div class="metcm-section">
+    <h3><i class="fas fa-military-symbol"></i> METCM Report (STANAG 4082)</h3>
+    <div class="metcm-card">
+        <div class="metcm-header">
+            <span class="metcm-title">Artillery Meteorological Data</span>
+            <span class="metcm-time-indicator" id="metcmTimeIndicator">for 12:00</span>
+            <button class="copy-btn" id="copyMetcmBtn" title="Copy METCM Message">
+                <i class="fas fa-copy"></i> Copy
+            </button>
+        </div>
+        <div class="metcm-code" id="metcmCode">
+            <!-- METCM message will appear here -->
+        </div>
+        <div style="display:none" class="metcm-explanation" id="metcmExplanation">
+            <!-- METCM explanation will appear here -->
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
