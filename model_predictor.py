@@ -109,7 +109,7 @@ def fetch_weather_api(lat=18.5204, lon=73.8567):
     """Fetch weather data from OpenWeatherMap API"""
     global last_used_api
     try:
-        API_KEY = "999cb96a61f49748b8a5c51c317dce55"
+        API_KEY = "Add your api key here"
         url = f"http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API_KEY}&units=metric"
 
         print("🌐 Fetching weather data from API...")
