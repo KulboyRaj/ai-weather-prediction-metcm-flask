@@ -329,7 +329,7 @@ def get_weather_summary(daily_prediction):
 
 if __name__ == '__main__':
     # Check if model and data files exist
-    if not os.path.exists('new.h5'):
+    if not os.path.exists('best_weather_lstm.h5'):
         print("❌ Model file 'best_weather_lstm.h5' not found!")
         exit(1)
 
