@@ -106,6 +106,7 @@ def initialize_api_cache():
 
 
 def fetch_weather_api(lat=18.5204, lon=73.8567):
+    """Change the location as per your requirements"""
     """Fetch weather data from OpenWeatherMap API"""
     global last_used_api
     try:
